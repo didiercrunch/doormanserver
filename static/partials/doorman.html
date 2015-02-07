@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="columns large-12">
+        <h2>{{ doorman.name }} </h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="columns large-12">
+        <span>doorman id: <code>{{ doorman.id }}</code></span>
+    </div>
+</div>
+
+<div class="row" ng-repeat="value in doorman.values">
+    <div class="columns large-9 small-10">
+        <label >name<input type="text" placeholder="value name" ng-value="value.name" disabled></label>
+    </div>
+    <div class="columns large-3 small-2">
+        <label >probability<input type="number" placeholder="value probability" ng-model="value.probability" min="0" max="1" step="0.01"></label>
+    </div>
+</div>
+
+<div class="row">
+    <div class="large-12 small-12 columns">
+        <ul class="button-group">
+          <li><a ng-click="updateDoorman()" class="small button" ng-class="{disabled: !validate()}">Update</a></li>
+          <li><a ng-click="deleteDoorman()" class="small button">Delete</a></li>
+        </ul>
+    </div>
+</div>

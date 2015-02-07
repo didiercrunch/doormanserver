@@ -1,0 +1,45 @@
+---
+
+
+#  This is union web site params' file.  The file is in yaml format.  The file
+#  should be auto-documented
+
+
+#  the port where the union web site will run
+port: 1999
+
+# the host name.  0.0.0.0 to share the service with everyone on the network.
+# localhost for running on localhost without the possibility to share the
+# service
+host: 0.0.0.0  #localhost
+
+#  determine which message queue to use
+message_queue: nanomsg # nanomsg  # nsq
+
+#  determine which database to use
+database: in_memory  # mongo
+
+################################################################################
+
+
+#  all the parameters relative to nsq message-queue.  To use nsq as message
+#  queue you need to speficy "nsq" in the "message_queue" key at top level.
+nsq:
+    nsq_lookupd_url: 127.0.0.1:4150
+
+
+#  all the parameters related to mongodb.  To use mongodb as your database you
+#  need to specify "mongodb" in the "database" key at top level
+mongo:
+    # the url where to get mongodb
+    url: localhost:27017
+
+    # the name of the database to use
+    database_name: doorman
+
+    # the name of the collection where all the street can be found
+    doorman_definition_collection: doorman_definitions
+
+#  all the parameters relative to nanomsg message-queue
+nanomsg:
+    nanomsg_url: tcp://127.0.0.1:40899

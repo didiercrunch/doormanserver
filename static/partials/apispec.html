@@ -1,0 +1,46 @@
+<div class="row wab-apispect">
+    <div class="columns large-12">
+        <h2>Api specification</h2>
+    </div>
+</div>
+
+
+<div class="row wab-apispect">
+    <table class="columns large-12">
+        <thead>
+            <tr>
+                <th >api endpoint</th>
+                <th>method</th>
+                <th >description</th>
+            </tr>
+        </thead>
+      <tbody>
+          <tr>
+              <td><wab-api endpoint="/doormen"></wab-api></td>
+              <td><wab-method method="get"></wab-method></td>
+              <td>Get the list of all the public doormen.</td>
+          </tr>
+          <tr>
+              <td><wab-api endpoint="/doormen"></wab-api></td>
+              <td><wab-method method="post"></wab-method></td>
+              <td>Create a new doorman.</td>
+          </tr>
+          <tr>
+              <td><wab-api endpoint="/doormen/:id"></wab-api></td>
+              <td><wab-method method="get"></wab-method></td>
+              <td>Get the doorman</td>
+          </tr>
+          <tr>
+              <td><wab-api endpoint="/doormen/:id"></wab-api></td>
+              <td><wab-method method="put"></wab-method></td>
+              <td>Update the doorman with new probabilities</td>
+          </tr>
+          <tr>
+              <td><wab-api endpoint="/doormen/:id"></wab-api></td>
+              <td><wab-method method="delete"></wab-method></td>
+              <td>Delete the doorman</td>
+          </tr>
+      </tbody>
+
+    </table>
+</div>

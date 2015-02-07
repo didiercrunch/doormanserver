@@ -1,0 +1,21 @@
+@import "settings";
+@import url(http://fonts.googleapis.com/css?family=Orbitron:400,900,500,700);
+
+h1, h2{
+    font-family: 'Orbitron', sans-serif;
+}
+
+
+.wab-sidebar{
+    background: $ghost;
+
+    h1{
+        text-align: center;
+        color: $primary-color;
+    }
+}
+.wab-apispect{
+    h2{
+        text-align: center;
+    }
+}
