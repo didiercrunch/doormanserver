@@ -18,7 +18,6 @@
     "angular-mocks": "~1.2.1",
     "requirejs": "~2.1.9",
     "requirejs-text": "~2.0.10",
-    "foundation": "zurb/bower-foundation",
     "html5-boilerplate": "~4.3.0",
     "angularAMD": "~0.2.1",
     "angular-foundation": "~0.5.1"

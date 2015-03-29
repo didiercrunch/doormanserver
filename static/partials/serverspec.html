@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="columns large-12">
+        <h1>server specification</h1>
+    </div>
+</div>
+
+<div class="row" ng-show="server.message_queue == 'nanomsg'">
+    <div class="columns large-12">
+    <h3>general</h3>
+    <table style="width:100%;">
+        <thead>
+            <tr>
+                <th >value</th>
+                <th>key</th>
+            </tr>
+        </thead>
+      <tbody>
+          <tr>
+              <td>hostname</td>
+              <td><code>{{server.hostname}}</code></td>
+          </tr>
+          <tr>
+              <td>port</td>
+              <td><code>{{server.port}}</code></td>
+          </tr>
+          <tr>
+              <td>go version</td>
+              <td><code>{{server.go_version}}</code></td>
+          </tr>
+      </tbody>
+    </table>
+    </div>
+</div>
+
+
+<div class="row" ng-show="server.message_queue == 'nanomsg'">
+    <div class="columns large-12">
+    <h3>nano msg</h3>
+    <table style="width:100%;">
+        <thead>
+            <tr>
+                <th >value</th>
+                <th>key</th>
+            </tr>
+        </thead>
+      <tbody>
+          <tr>
+              <td>url</td>
+              <td><code>{{server.nano_msg.url}}</code></td>
+          </tr>
+      </tbody>
+
+    </table>
+    </div>
+</div>

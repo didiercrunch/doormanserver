@@ -57,6 +57,11 @@ func TestValidate(t *testing.T) {
 	if err := dmd.Validate(); err.Error() != "the sum of the probability must be 1.0" {
 		t.Error(err)
 	}
+
+	dmd = &DoormanDefinition{Name: "foo", Values: []*DoormanValue{&DoormanValue{"foo", 0.2}, &DoormanValue{"bar", 0.2}}}
+	if err := dmd.Validate(); err.Error() != "the sum of the probability must be 1.0" {
+		t.Error(err)
+	}
 }
 
 func TestAsJson(t *testing.T) {

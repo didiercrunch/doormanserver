@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"log"
@@ -37,7 +37,6 @@ func initPublisher(params *shared.Params) {
 	if params.UseNSQ() {
 		initNSQPublisher()
 		log.Println("using nsq as message queue")
-
 	} else if params.UseNanomsg() {
 		initNanoMsgPublisher()
 		log.Println("using nanomsg as message queue")
@@ -45,8 +44,8 @@ func initPublisher(params *shared.Params) {
 		publisher = &logpublisher.LogPublisher{log.Println}
 		log.Println("using stdout as message queue")
 	}
-
 }
+
 func init() {
 	initPublisher(shared.GetParams())
 }

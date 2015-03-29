@@ -31,8 +31,8 @@ func (wId *DoormanId) AsJson() string {
 }
 
 type DoormanDefinition struct {
-	Id     bson.ObjectId  `json:"id,omitempty" bson:"_id"`
-	Name   string         `json:"name" bson:"name"`
+	Id     bson.ObjectId   `json:"id,omitempty" bson:"_id"`
+	Name   string          `json:"name" bson:"name"`
 	Values []*DoormanValue `json:"values" bson:"values"`
 }
 
@@ -71,13 +71,14 @@ func (dmd *DoormanDefinition) ValidateDoormanValueNames() error {
 func (dmd *DoormanDefinition) ValidateDoormanValueProbabilities() error {
 	var sum float64 = 0
 	for _, w := range dmd.Values {
+
 		if p := w.Probability; p < 0-epsilon || p > 1+epsilon {
 			return errors.New(fmt.Sprintf("doorman value %v is out of range", p))
 		} else {
 			sum += p
 		}
 	}
-	if sum < 0-epsilon || sum > 1+epsilon {
+	if sum < 1-epsilon || sum > 1+epsilon {
 		return errors.New("the sum of the probability must be 1.0")
 	}
 	return nil

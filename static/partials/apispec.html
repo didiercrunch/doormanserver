@@ -1,6 +1,6 @@
-<div class="row wab-apispect">
+<div class="row">
     <div class="columns large-12">
-        <h2>Api specification</h2>
+        <h1>Api specification</h1>
     </div>
 </div>
 
@@ -15,6 +15,11 @@
             </tr>
         </thead>
       <tbody>
+          <tr>
+              <td><wab-api endpoint="/server"></wab-api></td>
+              <td><wab-method method="get"></wab-method></td>
+              <td>Get the server specification</td>
+          </tr>
           <tr>
               <td><wab-api endpoint="/doormen"></wab-api></td>
               <td><wab-method method="get"></wab-method></td>
@@ -39,6 +44,16 @@
               <td><wab-api endpoint="/doormen/:id"></wab-api></td>
               <td><wab-method method="delete"></wab-method></td>
               <td>Delete the doorman</td>
+          </tr>
+          <tr>
+              <td><wab-api endpoint="/doormen/:id/status"></wab-api></td>
+              <td><wab-method method="get"></wab-method></td>
+              <td>Return the state of the doormen as expected by the client</td>
+          </tr>
+          <tr>
+              <td><wab-api endpoint="/doormen/:id/result?data=<base64>"></wab-api></td>
+              <td><wab-method method="get"></wab-method></td>
+              <td>Return the state of the doormen as expected by the client</td>
           </tr>
       </tbody>
 

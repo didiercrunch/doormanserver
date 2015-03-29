@@ -1,13 +1,13 @@
-package main
+package api
 
 import (
 	"errors"
 	"log"
 
+	"github.com/didiercrunch/doormanserver/doormen"
 	"github.com/didiercrunch/doormanserver/inmemoryconnector"
 	"github.com/didiercrunch/doormanserver/mongoconnector"
 	"github.com/didiercrunch/doormanserver/shared"
-	"github.com/didiercrunch/doormanserver/doormen"
 	"gopkg.in/mgo.v2/bson"
 )
 

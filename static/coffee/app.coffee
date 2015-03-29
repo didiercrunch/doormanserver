@@ -1,3 +1,4 @@
+
 define [
     "angularAMD"
     "angular-route"
@@ -9,6 +10,10 @@ define [
             templateUrl: "partials/home.html"
             controller: "HomeCtrl"
             controllerUrl: "controllers/homeCtrl"
+        )).when("/serverspec", angularAMD.route(
+            templateUrl: "partials/serverspec.html"
+            controller: "ServerspecCtrl"
+            controllerUrl: "controllers/serverspecCtrl"
         )).when("/apispec", angularAMD.route(
             templateUrl: "partials/apispec.html"
             controller: "ApispecCtrl"
@@ -31,5 +36,7 @@ define [
             controllerUrl: "controllers/doormanCtrl"
         )).otherwise redirectTo: "/"
         return
+
+        serverspec
 
     angularAMD.bootstrap(app)

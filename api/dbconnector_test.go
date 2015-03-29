@@ -1,13 +1,13 @@
-package main
+package api
 
 import (
 	"testing"
 
-	"github.com/didiercrunch/doormanserver/inmemoryconnector"
 	"github.com/didiercrunch/doormanserver/doormen"
+	"github.com/didiercrunch/doormanserver/inmemoryconnector"
 )
 
-func TestCreateDoorman(t *testing.T) {
+func TestCreateDoormanInDatabase(t *testing.T) {
 	wab := doormen.NewDoormanDefinition("some_name")
 	conn = inmemoryconnector.NewInMemoryDBConnector()
 

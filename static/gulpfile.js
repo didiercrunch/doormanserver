@@ -5,6 +5,7 @@ var help = require('gulp-task-listing');
 var clean = require('gulp-clean');
 var sass = require('gulp-sass');
 var rjs = require("gulp-rjs");
+var gutil = require('gulp-util');
 
 
 gulp.task('help', help);
@@ -22,7 +23,7 @@ gulp.task('sass', ['bower'], function () {
 
 gulp.task('coffee', ['bower'], function() {
     return gulp.src('coffee/**/*.coffee')
-        .pipe(coffee({bare: true}))
+        .pipe(coffee({bare: true}).on('error', gutil.log))
         .pipe(gulp.dest('js/'))
 });
 
