@@ -18,7 +18,8 @@ func CreateDoorman(w http.ResponseWriter, request *http.Request) {
 		return
 	}
 	wdef.Id = bson.NewObjectId()
-	if err := wdef.Validate(); err != nil {
+
+	if err := wdef.Validate(GetUser(request)); err != nil {
 		w.WriteHeader(400)
 		fmt.Fprintln(w, "New doorman is invalid \n", err)
 		return

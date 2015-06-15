@@ -135,3 +135,77 @@ func TestServePrefix(t *testing.T) {
 		t.Error(rd)
 	}
 }
+
+func TestDocumentationHandler(t *testing.T) {
+	api := New("/api", GetMockApiEndpoint("/foo/bar", "GET"))
+	req, err := http.NewRequest("GET", "http://example.com/foo", nil)
+	if err != nil {
+		t.Error(err)
+	}
+	w := httptest.NewRecorder()
+	api.DocumentationHandler(w, req)
+	if code := w.Code; code != 200 {
+		t.Error("bad status", code)
+	}
+	body := `{"endpoints":[{"description":"","method":"GET","pattern":"/foo/bar"}]}` + "\n"
+	if body != w.Body.String() {
+		t.Error()
+	}
+}
+
+func TestEnableDocumentation(t *testing.T) {
+	api := New("/api", GetMockApiEndpoint("/foo/bar", "GET"))
+	api.EnableDocumentation("/doc")
+	ts := httptest.NewServer(api)
+	defer ts.Close()
+	res, err := http.Get(ts.URL + "/api/doc")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	if res.StatusCode != 200 {
+		t.Error("should have status 200 but got", res.StatusCode)
+	}
+}
+
+func TestEnableDocumentationAndIniting(t *testing.T) {
+	api := New("/api", GetMockApiEndpoint("/foo/bar", "GET"))
+	api.EnableDocumentation("/doc")
+	api.InitRouter()
+	ts := httptest.NewServer(api)
+	defer ts.Close()
+	res, err := http.Get(ts.URL + "/api/doc")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	if res.StatusCode != 200 {
+		t.Error("should have status 200 but got", res.StatusCode)
+	}
+}
+
+func TestMiddleWares(t *testing.T) {
+	api := New("/api", GetMockApiEndpoint("/foo", "GET"))
+	middleWare1 := func(f http.HandlerFunc) http.HandlerFunc {
+		return func(w http.ResponseWriter, r *http.Request) {
+			r.URL.Path += "/1"
+			f(w, r)
+		}
+	}
+	middleWare2 := func(f http.HandlerFunc) http.HandlerFunc {
+		return func(w http.ResponseWriter, r *http.Request) {
+			r.URL.Path += "/2"
+			f(w, r)
+		}
+	}
+	api.AddMiddlewares(middleWare1, middleWare2)
+	api.InitRouter()
+	ts := httptest.NewServer(api)
+	defer ts.Close()
+	if rd, err := GET(ts, "/api/foo"); err != nil {
+		t.Error(err)
+	} else if rd.Path != "/api/foo/2/1" {
+		t.Error(rd.Path)
+	}
+
+}

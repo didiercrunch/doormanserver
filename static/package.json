@@ -6,6 +6,7 @@
     "gulp-coffee": "~2.2.0",
     "gulp-sass": "^1.2.4",
     "gulp-task-listing": "~0.3.0",
+    "gulp-util": "^3.0.3",
     "node-sass": "~1.2.3"
   },
   "devDependencies": {

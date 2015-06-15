@@ -12,31 +12,73 @@
 </div>
 
 <div class="row" ng-repeat="value in doorman.values">
-    <div class="columns large-9 small-10">
+    <div class="columns large-8 small-10">
         <label >name<input type="text" placeholder="value name" ng-value="value.name" disabled></label>
     </div>
-    <div class="columns large-3 small-2">
-        <label >probability<input type="number" placeholder="value probability" ng-model="value.probability" min="0" max="1" step="0.01"></label>
+    <div class="columns large-4 small-2">
+        <label >
+            probability
+            <input type="number"
+                   placeholder="value probability"
+                   ng-model="value.probability"
+                   ng-disabled="!isAdmin"
+                   min="0"
+                   max="1"
+                   step="0.01"></label>
     </div>
 </div>
 
-<!-- <div class="row">
-    <div class="columns large-12 small-12">
-        <h3>try it!</h3>
-    </div>
-</div>
 <div class="row">
-    <textarea class="large-offset-1 small-offset-1 large-10 small-10 columns">
-    </textarea>
+    <div class="large-4 columns">
+        <ul>
+            <li ng-repeat="email in leftEmailColumns">
+                <span ng-bind="email"></span>
+                <i class="fa fa-times right"
+                   ng-click="removeEmail(email)"
+                   style="cursor: pointer;"
+                   ng-show="doorman.emails.length > 1 && isAdmin && email != user"
+
+                   ></i>
+            </li>
+        </ul>
+    </div>
+    <div class="large-4 columns">
+        <ul>
+            <li ng-repeat="email in rightEmailColumns">
+                <span ng-bind="email"></span>
+                <i class="fa fa-times right"></i>
+            </li>
+        </ul>
+    </div>
+    <div class="large-4 columns">
+        <div>
+            <label>
+                new admin
+                <div class="row collapse">
+                    <div class="columns large-10">
+
+                        <input type="text" ng-model="newEmail"/>
+                    </div>
+                    <div class="columns large-2">
+
+                        <a class="button postfix" ng-click="addNewAuthorEmail()"  ng-class=" canAddNewEmail() ? '' : 'disabled' " >+</a>
+                    </div>
+                </div>
+            </label>
+        </div>
+    </div>
+
 </div>
 
-<div class="row">
-    <div class="large-offset-1 small-offset-1 large-10 small-10 columns">
-        <a href="#" class="button tiny">try</a>
+<div class="row" ng-show="error">
+    <div class="columns large-12">
+        <code style="width:100%; height:100%; display:block; margin-bottom: 1em;">
+            <b>{{ error.status }}</b><br>&nbsp; {{ error.message }}
+        </code>
     </div>
-</div> -->
+</div>
 
-<div class="row">
+<div class="row" ng-show="isAdmin">
     <div class="large-12 small-12 columns">
         <ul class="button-group">
             <li><a ng-click="updateDoorman()" class="small button" ng-class="{disabled: !validate()}">Update</a></li>

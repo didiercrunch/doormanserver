@@ -1,8 +1,12 @@
 define ["app", "angularAMD"], (app, angularAMD) ->
-    app.controller "ApispecCtrl", ($scope) ->
+    app.controller "ApispecCtrl",['$scope', '$http', ($scope, $http) ->
+        $http.get("/api/documentation").then (res)->
+            $scope.endpoints = res.data.endpoints
+
         $scope.methods =
             get: "GET"
             post: "POST"
+    ]
 
     angularAMD.directive "wabMethod", () ->
         directive =

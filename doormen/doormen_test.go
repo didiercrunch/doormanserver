@@ -21,45 +21,53 @@ func TestNewDoormanDefinition(t *testing.T) {
 
 func TestValidate(t *testing.T) {
 	dmd := &DoormanDefinition{Name: ""}
-	if err := dmd.Validate(); err.Error() != "name cannot be empty" {
+	if err := dmd.Validate("bob"); err.Error() != "name cannot be empty" {
 		t.Error(err)
 	}
 	dmd = &DoormanDefinition{Name: "foo"}
-	if err := dmd.Validate(); err.Error() != "need at least 2 values" {
+	if err := dmd.Validate("bob"); err.Error() != "need at least 2 values" {
 		t.Error(err)
 	}
 	dmd = &DoormanDefinition{Name: "foo", Values: []*DoormanValue{nil}}
-	if err := dmd.Validate(); err.Error() != "need at least 2 values" {
+	if err := dmd.Validate("bob"); err.Error() != "need at least 2 values" {
 		t.Error(err)
 	}
 
 	dmd = &DoormanDefinition{Name: "foo", Values: []*DoormanValue{&DoormanValue{"foo", 0}, &DoormanValue{"foo", 0}}}
-	if err := dmd.Validate(); err.Error() != "doorman value names must be unique within a doorman" {
+	if err := dmd.Validate("bob"); err.Error() != "doorman value names must be unique within a doorman" {
 		t.Error(err)
 	}
 
 	dmd = &DoormanDefinition{Name: "foo", Values: []*DoormanValue{&DoormanValue{"foo", 0}, &DoormanValue{"", 0}}}
-	if err := dmd.Validate(); err.Error() != "doorman value cannot be empty" {
+	if err := dmd.Validate("bob"); err.Error() != "doorman value cannot be empty" {
 		t.Error(err)
 	}
 
 	dmd = &DoormanDefinition{Name: "foo", Values: []*DoormanValue{&DoormanValue{"foo", -0.25}, &DoormanValue{"bar", 0.5}}}
-	if err := dmd.Validate(); err.Error() != "doorman value -0.25 is out of range" {
+	if err := dmd.Validate("bob"); err.Error() != "doorman value -0.25 is out of range" {
 		t.Error(err)
 	}
 
 	dmd = &DoormanDefinition{Name: "foo", Values: []*DoormanValue{&DoormanValue{"foo", 2.5}, &DoormanValue{"bar", 0.5}}}
-	if err := dmd.Validate(); err.Error() != "doorman value 2.5 is out of range" {
+	if err := dmd.Validate("bob"); err.Error() != "doorman value 2.5 is out of range" {
 		t.Error(err)
 	}
 
 	dmd = &DoormanDefinition{Name: "foo", Values: []*DoormanValue{&DoormanValue{"foo", 0.75}, &DoormanValue{"bar", 0.5}}}
-	if err := dmd.Validate(); err.Error() != "the sum of the probability must be 1.0" {
+	if err := dmd.Validate("bob"); err.Error() != "the sum of the probability must be 1.0" {
 		t.Error(err)
 	}
 
 	dmd = &DoormanDefinition{Name: "foo", Values: []*DoormanValue{&DoormanValue{"foo", 0.2}, &DoormanValue{"bar", 0.2}}}
-	if err := dmd.Validate(); err.Error() != "the sum of the probability must be 1.0" {
+	if err := dmd.Validate("bob"); err.Error() != "the sum of the probability must be 1.0" {
+		t.Error(err)
+	}
+	dmd = &DoormanDefinition{Name: "foo", Values: []*DoormanValue{&DoormanValue{"foo", 0.8}, &DoormanValue{"bar", 0.2}}}
+	if err := dmd.Validate("bob"); err.Error() != "A doorman needs at least one owner specify as 'email'." {
+		t.Error(err)
+	}
+	dmd = &DoormanDefinition{Name: "foo", Values: []*DoormanValue{&DoormanValue{"foo", 0.8}, &DoormanValue{"bar", 0.2}}, OwnerEmails: []string{"alice"}}
+	if err := dmd.Validate("bob"); err.Error() != "'bob' is not allow to edit this doorman." {
 		t.Error(err)
 	}
 }
@@ -126,4 +134,21 @@ func TestQuickNewDoormanDefinition(t *testing.T) {
 	if dmd.Values[1].Name != "T1" || dmd.Values[1].Probability != 0.25 {
 		t.Error()
 	}
+	if len(dmd.OwnerEmails) != 1 && dmd.OwnerEmails[0] != "natasha@bigtits.com" {
+		t.Error()
+	}
+}
+
+func TestAsWriteAccess(t *testing.T) {
+	dmd := &DoormanDefinition{OwnerEmails: []string{"natasha@bigtits.com"}}
+	testCases := map[string]bool{
+		"natasha@bigtits.com": true,
+		"natasha@bigtis.net":  false,
+	}
+	for email, hasAccess := range testCases {
+		if hasAccess != dmd.AsWriteAccess(email) {
+			t.Error(email)
+		}
+	}
+
 }

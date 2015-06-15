@@ -8,52 +8,19 @@
 <div class="row wab-apispect">
     <table class="columns large-12">
         <thead>
-            <tr>
+            <tr >
                 <th >api endpoint</th>
                 <th>method</th>
                 <th >description</th>
             </tr>
         </thead>
       <tbody>
-          <tr>
-              <td><wab-api endpoint="/server"></wab-api></td>
-              <td><wab-method method="get"></wab-method></td>
-              <td>Get the server specification</td>
-          </tr>
-          <tr>
-              <td><wab-api endpoint="/doormen"></wab-api></td>
-              <td><wab-method method="get"></wab-method></td>
-              <td>Get the list of all the public doormen.</td>
-          </tr>
-          <tr>
-              <td><wab-api endpoint="/doormen"></wab-api></td>
-              <td><wab-method method="post"></wab-method></td>
-              <td>Create a new doorman.</td>
-          </tr>
-          <tr>
-              <td><wab-api endpoint="/doormen/:id"></wab-api></td>
-              <td><wab-method method="get"></wab-method></td>
-              <td>Get the doorman</td>
-          </tr>
-          <tr>
-              <td><wab-api endpoint="/doormen/:id"></wab-api></td>
-              <td><wab-method method="put"></wab-method></td>
-              <td>Update the doorman with new probabilities</td>
-          </tr>
-          <tr>
-              <td><wab-api endpoint="/doormen/:id"></wab-api></td>
-              <td><wab-method method="delete"></wab-method></td>
-              <td>Delete the doorman</td>
-          </tr>
-          <tr>
-              <td><wab-api endpoint="/doormen/:id/status"></wab-api></td>
-              <td><wab-method method="get"></wab-method></td>
-              <td>Return the state of the doormen as expected by the client</td>
-          </tr>
-          <tr>
-              <td><wab-api endpoint="/doormen/:id/result?data=<base64>"></wab-api></td>
-              <td><wab-method method="get"></wab-method></td>
-              <td>Return the state of the doormen as expected by the client</td>
+          <tr ng-repeat="endpoint in endpoints">
+              <td><wab-api endpoint="{{ endpoint.pattern }}"></wab-api></td>
+              <td>
+                  <code style="width:5em; display: block; text-align: center;">{{ endpoint.method }}</code>
+              </td>
+              <td >{{ endpoint.description }}</td>
           </tr>
       </tbody>
 

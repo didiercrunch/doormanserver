@@ -11,30 +11,65 @@
         </div>
     </div>
 
-    <div class="row" ng-repeat="value in payload.values">
-        <div class="columns large-8">
-            <label >value<input type="text" placeholder="value name" ng-model="value.name"></label>
-        </div>
-        <div class="columns large-3">
-            <label >probability<input type="number" placeholder="value probability" ng-model="value.probability" min="0" max="1" step="0.01"></label>
-        </div>
-        <div class="columns large-1">
-            <br>
-            <a class="button round tiny" ng-click="removeValue( $index )">-</a>
+    <div class="row">
+        <div class="columns large-12">
+            <fieldset>
+                <legend>doorman state</legend>
+
+                <div class="row">
+                    <div class="columns large-8">
+                        <label >name<input type="text" placeholder="value name" ng-model="value.name"></label>
+                    </div>
+                    <div class="columns large-3">
+                        <label >probability<input type="number" placeholder="value probability" ng-model="value.probability" min="0" max="1" step="0.01"></label>
+                    </div>
+
+                    <div class="columns large-1">
+                        <br>
+                        <a class="button round tiny" ng-class="{disabled: !isValidValue()}" ng-click="addNewValue()">+</a>
+                    </div>
+                </div>
+
+                <div class="row" ng-repeat="value in payload.values | reverse">
+                    <div class="columns large-8">
+                        <label >value<input type="text" placeholder="value name" ng-model="value.name"></label>
+                    </div>
+                    <div class="columns large-3">
+                        <label >probability<input type="number" placeholder="value probability" ng-model="value.probability" min="0" max="1" step="0.01"></label>
+                    </div>
+                    <div class="columns large-1">
+                        <br>
+                        <a class="button round tiny" ng-click="removeValue( payload.values.length - $index - 1 )">-</a>
+                    </div>
+                </div>
+            </fieldset>
         </div>
     </div>
 
     <div class="row">
-        <div class="columns large-8">
-            <label >name<input type="text" placeholder="value name" ng-model="value.name"></label>
-        </div>
-        <div class="columns large-3">
-            <label >probability<input type="number" placeholder="value probability" ng-model="value.probability" min="0" max="1" step="0.01"></label>
-        </div>
+        <div class="columns large-12">
+            <fieldset>
+                <legend>administrator</legend>
 
-        <div class="columns large-1">
-            <br>
-            <a class="button round tiny" ng-class="{disabled: !isValidValue()}" ng-click="addNewValue()">+</a>
+                <div class="row">
+                    <div class="columns large-11">
+                        <label>admin email <input type="text" placeholder="wild cards are allow here" ng-model="newEmail"></label>
+                    </div>
+                    <div class="columns large-1">
+                        <br><a class="button round tiny" ng-click="addEmail()" ng-class="{disabled: !newEmail}">+</a>
+                    </div>
+                </div>
+
+                <div class="row" ng-repeat="email in payload.emails | reverse">
+                    <div class="columns large-11">
+                        <label>admin email <input type="text" ng-disabled="email==user" placeholder="wild cards are allow here" ng-model="email"></label>
+                    </div>
+                    <div class="columns large-1">
+                        <br><a class="button round tiny" ng-click="removeEmail(payload.emails.length - $index -1)" ng-disabled="email==user? 'disabled' : ''">-</a>
+                    </div>
+                </div>
+
+            </fieldset>
         </div>
     </div>
 

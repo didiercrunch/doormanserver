@@ -34,9 +34,11 @@ define [
             templateUrl: "partials/doorman.html"
             controller: "DoormanCtrl"
             controllerUrl: "controllers/doormanCtrl"
-        )).otherwise redirectTo: "/"
+        )).otherwise({redirectTo: "/"})
+
+        document.getElementsByTagName("body")[0].style.visibility = ""
         return
 
-        serverspec
+
 
     angularAMD.bootstrap(app)

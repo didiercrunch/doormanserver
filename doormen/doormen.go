@@ -31,23 +31,24 @@ func (wId *DoormanId) AsJson() string {
 }
 
 type DoormanDefinition struct {
-	Id     bson.ObjectId   `json:"id,omitempty" bson:"_id"`
-	Name   string          `json:"name" bson:"name"`
-	Values []*DoormanValue `json:"values" bson:"values"`
+	Id          bson.ObjectId   `json:"id,omitempty" bson:"_id"`
+	Name        string          `json:"name" bson:"name"`
+	Values      []*DoormanValue `json:"values" bson:"values"`
+	OwnerEmails []string        `json:"emails" bson:"emails"`
 }
 
-func NewDoormanDefinition(name string) *DoormanDefinition {
-	return &DoormanDefinition{Id: bson.NewObjectId(), Name: name}
+func NewDoormanDefinition(name string, ownerEmails ...string) *DoormanDefinition {
+	return &DoormanDefinition{Id: bson.NewObjectId(), Name: name, OwnerEmails: ownerEmails}
 }
 
 // a way to quickly create doormen in tests.  do not use in real code.  will
 // panic if a doorman is wrongly specify
 func QuickNewDoormanDefinition(name string, probs ...float64) *DoormanDefinition {
-	ret := NewDoormanDefinition(name)
+	ret := NewDoormanDefinition(name, "natasha@bigtits.com")
 	for i, prob := range probs {
 		ret.Values = append(ret.Values, &DoormanValue{"T" + strconv.Itoa(i), prob})
 	}
-	if err := ret.Validate(); err != nil {
+	if err := ret.Validate("natasha@bigtits.com"); err != nil {
 		panic(err)
 	}
 	return ret
@@ -68,6 +69,15 @@ func (dmd *DoormanDefinition) ValidateDoormanValueNames() error {
 	return nil
 }
 
+func (dmd *DoormanDefinition) AsWriteAccess(email string) bool {
+	for _, email_ := range dmd.OwnerEmails {
+		if email_ == email {
+			return true
+		}
+	}
+	return false
+}
+
 func (dmd *DoormanDefinition) ValidateDoormanValueProbabilities() error {
 	var sum float64 = 0
 	for _, w := range dmd.Values {
@@ -84,7 +94,7 @@ func (dmd *DoormanDefinition) ValidateDoormanValueProbabilities() error {
 	return nil
 }
 
-func (dmd *DoormanDefinition) Validate() (err error) {
+func (dmd *DoormanDefinition) Validate(author string) (err error) {
 	switch {
 	case dmd.Name == "":
 		err = errors.New("name cannot be empty")
@@ -94,6 +104,10 @@ func (dmd *DoormanDefinition) Validate() (err error) {
 		err = dmd.ValidateDoormanValueNames()
 	case dmd.ValidateDoormanValueProbabilities() != nil:
 		err = dmd.ValidateDoormanValueProbabilities()
+	case len(dmd.OwnerEmails) < 1:
+		err = errors.New("A doorman needs at least one owner specify as 'email'.")
+	case !dmd.AsWriteAccess(author):
+		err = errors.New(fmt.Sprintf("'%s' is not allow to edit this doorman.", author))
 	}
 	return
 }

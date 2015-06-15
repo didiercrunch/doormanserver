@@ -19,14 +19,13 @@ func GetAddressToServe() string {
 
 func serveStatic2(w http.ResponseWriter, request *http.Request) {
 	filepath := request.URL.Path
-	w.Header().Set("Cache-Control", "public, max-age=43200")
-	fmt.Println(STATIC_DIR_PATH, filepath, path.Join(STATIC_DIR_PATH, filepath))
+	w.Header().Set("Cache-Control", "private, max-age=0, no-cache")
 	http.ServeFile(w, request, path.Join(STATIC_DIR_PATH, filepath))
 }
 
 func main() {
 	mux := http.NewServeMux()
-	mux.Handle("/api/", api.Create())
+	mux.Handle("/api/", api.Create("/api"))
 	mux.HandleFunc("/", serveStatic2)
 
 	address := GetAddressToServe()

@@ -22,7 +22,7 @@ func UpdateDoorman(w http.ResponseWriter, request *http.Request) {
 	}
 	wdef.Id = id
 
-	if err := wdef.Validate(); err != nil {
+	if err := wdef.Validate(GetUser(request)); err != nil {
 		Write400Error(w, err)
 		return
 	}

@@ -4,8 +4,26 @@
     </div>
 </div>
 
+
+
 <div class="row">
+    <fieldset>
+        <legend>Login</legend>
+        <div class="large-12 columns">
+            <div class="row collapse">
+                <div class="small-10 columns">
+                    <input type="text" placeholder="email" ng-model="email">
+                </div>
+                <div class="small-2 columns">
+                    <a class="button postfix" ng-click="login()">Login!</a>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+<div class="row" ng-show="loggedEmail">
     <div class="large-12 columns">
-        {{ message }}
+        You are currently logged in as <code ng-bind="loggedEmail"></code>
     </div>
 </div>

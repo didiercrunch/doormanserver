@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func Create() http.Handler {
+func Create(root string) http.Handler {
 	serverSpecification := &simpleapi.Endpoint{
 		"/server",
 		"Get the server specification.",
@@ -29,26 +29,32 @@ func Create() http.Handler {
 
 	doorman := &simpleapi.Endpoint{
 		"/doormen/{id}",
-		"Get the doorman.",
+		"Get a specific doorman by id.",
 		"GET",
 		GetDoorman,
 	}
 
 	updateDoorman := &simpleapi.Endpoint{
 		"/doormen/{id}",
-		"Update the doorman with new probabilities.",
+		`Update the doorman with new probabilities or owner emails.  The payload
+		must be a valid doorman with the same id than the targeted doorman.
+		The values of the PUT doorman will replace the values of the old
+		ones.`,
 		"PUT",
 		UpdateDoorman,
 	}
 
 	api := simpleapi.New(
-		"/api",
+		root,
 		serverSpecification,
 		createDoorman,
 		allDoorman,
 		doorman,
 		updateDoorman,
 	)
+	api.EnableDocumentation("documentation")
+	api.AddMiddlewares(AuthenticationMiddleware)
+	api.InitRouter()
 
 	return api
 }

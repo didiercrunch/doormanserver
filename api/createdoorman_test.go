@@ -16,7 +16,11 @@ func GetIdFromLocation(p string) bson.ObjectId {
 
 func TestCreateDoorman(t *testing.T) {
 	conn = inmemoryconnector.NewInMemoryDBConnector()
-	payload := `{"name":"name","values":[{"name":"red","probability":0.2},{"name":"blue","probability":0.8}]}`
+	payload := `
+	{"name":"name",
+	"values":[{"name":"red","probability":0.2},{"name":"blue","probability":0.8}],
+	"emails": ["alice"]
+	}`
 	req, err := http.NewRequest(
 		"POST",
 		"http://bigtits.com/api/doormen",
@@ -26,6 +30,7 @@ func TestCreateDoorman(t *testing.T) {
 		t.Error(err)
 		return
 	}
+	SetUser(req, "alice")
 	w := httptest.NewRecorder()
 	CreateDoorman(w, req)
 	if w.Code != 201 {

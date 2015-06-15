@@ -20,6 +20,8 @@
     "requirejs-text": "~2.0.10",
     "html5-boilerplate": "~4.3.0",
     "angularAMD": "~0.2.1",
-    "angular-foundation": "~0.5.1"
+    "angular-foundation": "~0.5.1",
+    "lodash": "~3.9.3",
+    "font-awesome": "~4.3.0"
   }
 }

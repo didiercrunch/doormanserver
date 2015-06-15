@@ -1,15 +1,17 @@
 epsilon = 0.0001
 
-define ["app"], (app) ->
-    app.controller "NewDoormanCtrl", ["$scope", "$http", "$location", ($scope, $http, $location) ->
+define ["app", "../filters"], (app, filters) ->
+    app.controller "NewDoormanCtrl", ["$scope", "$http", "$location",  ($scope, $http, $location) ->
         $scope.error = ""
-        $scope.value = {}
+        $scope.user = localStorage.getItem("email")
+        $scope.value = {probability: 0, name: ""}
         $scope.payload =
             name: ""
             values: []
+            emails: [$scope.user]
 
         $scope.isValidValue = () ->
-            return $scope.value.name and $scope.value.probability
+            return $scope.value.name
 
         $scope.addNewValue = () ->
             if !$scope.isValidValue()
@@ -34,7 +36,8 @@ define ["app"], (app) ->
         $scope.createDoorman = () ->
             if not $scope.isDoormanValid()
                 return
-            $http.post("/api/doormen", $scope.payload).
+            params = {params: {user: $scope.user}}
+            $http.post("/api/doormen", $scope.payload, params).
             then((res, s) ->
                 $scope.redirectToDoorman(res.headers("location"))
             ).catch((res) ->
@@ -49,6 +52,18 @@ define ["app"], (app) ->
             if Math.abs($scope.getProbabilityRemaining()) > epsilon
                 return false
             return true
+
+        $scope.addEmail = () ->
+            if not $scope.newEmail
+                return
+            $scope.payload.emails.push($scope.newEmail)
+            $scope.newEmail = ""
+
+        $scope.removeEmail = (idx) ->
+            if $scope.payload.emails[idx] == $scope.user
+                return
+            $scope.payload.emails.splice(idx, 1);
+
 
 
         return
