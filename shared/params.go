@@ -69,7 +69,7 @@ func (p *Params) InsertDefaultValues() *Params {
 }
 
 func LoadFromYamlFile(fileName string) (*Params, error) {
-	if !Exists(fileName) {
+	if !exists(fileName) {
 		return new(Params).InsertDefaultValues(), nil
 	}
 	data, err := ioutil.ReadFile(fileName)

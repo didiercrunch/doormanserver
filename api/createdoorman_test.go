@@ -3,6 +3,7 @@ package api
 import (
 	"bytes"
 	"github.com/didiercrunch/doormanserver/inmemoryconnector"
+	"github.com/didiercrunch/doormanserver/shared"
 	"gopkg.in/mgo.v2/bson"
 	"net/http"
 	"net/http/httptest"
@@ -11,7 +12,12 @@ import (
 )
 
 func GetIdFromLocation(p string) bson.ObjectId {
-	return bson.ObjectIdHex(path.Base(p))
+	if id, err := shared.PublicIdToObjectId(path.Base(p)); err != nil {
+		panic(err)
+	} else {
+		return id
+	}
+
 }
 
 func TestCreateDoorman(t *testing.T) {

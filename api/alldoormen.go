@@ -6,13 +6,13 @@ import (
 )
 
 func GetAllDoormen(w http.ResponseWriter, request *http.Request) {
-	fmt.Fprint(w, `{"doormen" :[`)
 	doormenIds := conn.GetAllDoormen()
 	buff := <-doormenIds
 	if buff == nil {
-		fmt.Fprint(w, "]}")
+		fmt.Fprint(w, `{"doormen" :[]}`)
 		return
 	}
+	fmt.Fprint(w, `{"doormen" :[`)
 	for doormanId := range doormenIds {
 		fmt.Fprint(w, getDoormenIdsAsJson(buff)+`,`)
 		buff = doormanId

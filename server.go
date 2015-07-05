@@ -17,7 +17,7 @@ func GetAddressToServe() string {
 	return params.Host + ":" + strconv.Itoa(params.Port)
 }
 
-func serveStatic2(w http.ResponseWriter, request *http.Request) {
+func serveStatic(w http.ResponseWriter, request *http.Request) {
 	filepath := request.URL.Path
 	w.Header().Set("Cache-Control", "private, max-age=0, no-cache")
 	http.ServeFile(w, request, path.Join(STATIC_DIR_PATH, filepath))
@@ -26,7 +26,7 @@ func serveStatic2(w http.ResponseWriter, request *http.Request) {
 func main() {
 	mux := http.NewServeMux()
 	mux.Handle("/api/", api.Create("/api"))
-	mux.HandleFunc("/", serveStatic2)
+	mux.HandleFunc("/", serveStatic)
 
 	address := GetAddressToServe()
 	fmt.Println("server running at", address)

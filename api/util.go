@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 	"github.com/didiercrunch/doormanserver/doormen"
+	"github.com/didiercrunch/doormanserver/shared"
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
 	"log"
@@ -10,15 +11,16 @@ import (
 )
 
 func getDoormenIdsAsJson(id *doormen.DoormanId) string {
-	return fmt.Sprintf(`{"name": "%v", "id": "%v", "url": "/api/doormen/%v"}`, id.Name, id.Id.Hex(), id.Id.Hex())
+	publicId := shared.ObjectIdToPublicId(id.Id)
+	return fmt.Sprintf(`{"name": "%v", "id": "%v", "url": "/api/doormen/%v"}`, id.Name, publicId, publicId)
 }
 
 func getDoormanIdFromRequest(w http.ResponseWriter, request *http.Request) bson.ObjectId {
 	id := mux.Vars(request)["id"]
-	if !bson.IsObjectIdHex(id) {
+	if id, err := shared.PublicIdToObjectId(id); err != nil {
 		return ""
 	} else {
-		return bson.ObjectIdHex(id)
+		return id
 	}
 }
 

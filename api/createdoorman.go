@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/didiercrunch/doormanserver/doormen"
+	"github.com/didiercrunch/doormanserver/shared"
 	"gopkg.in/mgo.v2/bson"
 	"net/http"
 )
@@ -30,6 +31,6 @@ func CreateDoorman(w http.ResponseWriter, request *http.Request) {
 		return
 	}
 	go publisher.Emit(wdef.Id, wdef)
-	w.Header().Set("location", "/api/doormen/"+wdef.Id.Hex())
+	w.Header().Set("location", "/api/doormen/"+shared.ObjectIdToPublicId(wdef.Id))
 	w.WriteHeader(201)
 }

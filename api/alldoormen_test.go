@@ -29,7 +29,7 @@ func TestGetAllDoormen(t *testing.T) {
 	GetAllDoormen(w, req)
 
 	d := json.NewDecoder(w.Body)
-	m := make(map[string][]*doormen.DoormanDefinition)
+	m := make(map[string][]*doormen.DoormanId)
 
 	if err := d.Decode(&m); err != nil {
 		t.Error(err)

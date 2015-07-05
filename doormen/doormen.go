@@ -17,11 +17,6 @@ type DoormanValue struct {
 	Probability *big.Rat `json:"probability"`
 }
 
-type doormanValue struct {
-	Name        string
-	Probability string
-}
-
 type DoormanId struct {
 	Id   bson.ObjectId `json:"id,omitempty" bson:"_id"`
 	Name string        `json:"name" bson:"name"`
@@ -35,10 +30,10 @@ func (wId *DoormanId) AsJson() string {
 }
 
 type DoormanDefinition struct {
-	Id          bson.ObjectId   `json:"id,omitempty" bson:"_id"`
-	Name        string          `json:"name" bson:"name"`
-	Values      []*DoormanValue `json:"values" bson:"values"`
-	OwnerEmails []string        `json:"emails" bson:"emails"`
+	Id          bson.ObjectId   `bson:"_id"`
+	Name        string          `bson:"name"`
+	Values      []*DoormanValue `bson:"values"`
+	OwnerEmails []string        `bson:"emails"`
 }
 
 func NewDoormanDefinition(name string, ownerEmails ...string) *DoormanDefinition {
