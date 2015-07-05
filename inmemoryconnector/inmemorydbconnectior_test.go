@@ -8,7 +8,7 @@ import (
 )
 
 func createMockDoorman(name string) *doormen.DoormanDefinition {
-	return doormen.QuickNewDoormanDefinition(name, 0.5, 0.5)
+	return doormen.QuickNewDoormanDefinition(name, "0.5", "0.5")
 }
 
 func TestNewInMemoryDBConnector(t *testing.T) {

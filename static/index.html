@@ -9,35 +9,39 @@
     </head>
 
     <body style="visibility:hidden;">
+        <div ng-controller="topbarCtrl">
+            <top-bar>
+                <ul class="title-area">
+                    <li class="name">
+                        <h1><a href="#/">Doorman</a></h1>
+                    </li>
+                    <li toggle-top-bar class="menu-icon"><a >Menu</a></li>
+                </ul>
 
+                <top-bar-section>
+                    <ul class="left show-for-large-up">
+                        <li>
+                            <a ng-bind="email" href="#"></a>
+                        </li>
+                    </ul>
 
-        <top-bar>
-    <ul class="title-area">
-      <li class="name">
-        <h1><a href="#">Doorman</a></h1>
-      </li>
-      <li toggle-top-bar class="menu-icon"><a href="#">Menu</a></li>
-    </ul>
+                    <ul class="right">
+                        <li has-dropdown>
+                            <a >Dropdown</a>
+                            <ul top-bar-dropdown ng-show="loggedIn">
+                                <li><a href="#/doormen">doormen</a></li>
+                                <li><a href="#/newdoorman">new doorman</a></li>
+                                <li><a href="#/apispec">api specification</a></li>
+                                <li><a href="#/serverspec">server specification</a></li>
+                                <li ng-click="logout()"><a href="#/">logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </top-bar-section>
+            </top-bar>
+        </div>
 
-    <top-bar-section>
-      <!-- Right Nav Section -->
-      <ul class="right">
-        <li has-dropdown>
-          <a href="#">Dropdown</a>
-          <ul top-bar-dropdown>
-            <li><a href="#/doormen">doormen</a></li>
-            <li><a href="#/newdoorman">new doorman</a></li>
-            <li><a href="#/apispec">api specification</a></li>
-            <li><a href="#/serverspec">server specification</a></li>
-          </ul>
-        </li>
-      </ul>
-
-    </top-bar-section>
-  </top-bar>
-
-  <div class="large-12 small-12 columns" ng-view></div>
-
-    </body>
+        <div class="large-12 small-12 columns" ng-view></div>
+   </body>
 
 </html>

@@ -7,6 +7,7 @@
 
 
 <div class="row">
+    <form ng-submit="login()" >
     <fieldset>
         <legend>Login</legend>
         <div class="large-12 columns">
@@ -15,11 +16,12 @@
                     <input type="text" placeholder="email" ng-model="email">
                 </div>
                 <div class="small-2 columns">
-                    <a class="button postfix" ng-click="login()">Login!</a>
+                    <input type="submit" class="button postfix" >Login!</input>
                 </div>
             </div>
         </div>
     </fieldset>
+    <form>
 </div>
 
 <div class="row" ng-show="loggedEmail">

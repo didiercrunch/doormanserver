@@ -1,10 +1,10 @@
 epsilon = 0.0001
 
-define ["app", "../filters"], (app, filters) ->
-    app.controller "NewDoormanCtrl", ["$scope", "$http", "$location",  ($scope, $http, $location) ->
+define ["app", "lodash", "../filters", "directives/ratinput"], (app, _, filters, ratinput) ->
+    app.controller "NewDoormanCtrl", ["$scope", "$http", "$location", "rationals", ($scope, $http, $location, rationals) ->
         $scope.error = ""
         $scope.user = localStorage.getItem("email")
-        $scope.value = {probability: 0, name: ""}
+        $scope.value = {probability: "1", name: ""}
         $scope.payload =
             name: ""
             values: []
@@ -17,27 +17,34 @@ define ["app", "../filters"], (app, filters) ->
             if !$scope.isValidValue()
                 return
             $scope.payload.values.push($scope.value)
-            $scope.value = {name: "", probability: 0}
+            $scope.value =
+                name: ""
+                probability: $scope.getProbabilityRemaining()
 
         $scope.removeValue = (idx) ->
             $scope.payload.values.splice(idx, 1);
 
         $scope.getProbabilityRemaining = () ->
-            ret = 0
-            for v in $scope.payload.values
-                ret += v.probability
-            return 1 - ret
+            sum = rationals.sum(_.pluck($scope.payload.values, "probability")...)
+            return rationals.minus("1", sum)
+
 
         $scope.redirectToDoorman = (doormanLocation) ->
             $http.get(doormanLocation).then (res) ->
                 id = res.data.id
                 return  $location.url("/doormen/#{id}")
 
+        $scope.getPayload = () ->
+            payload = _.cloneDeep($scope.payload)
+            for value in payload.values
+                value.probability = value.probability
+            return payload
+
         $scope.createDoorman = () ->
             if not $scope.isDoormanValid()
                 return
             params = {params: {user: $scope.user}}
-            $http.post("/api/doormen", $scope.payload, params).
+            $http.post("/api/doormen", $scope.getPayload(), params).
             then((res, s) ->
                 $scope.redirectToDoorman(res.headers("location"))
             ).catch((res) ->
@@ -49,9 +56,8 @@ define ["app", "../filters"], (app, filters) ->
                 return false
             if $scope.payload.values.length < 2
                 return false
-            if Math.abs($scope.getProbabilityRemaining()) > epsilon
-                return false
-            return true
+            rationals.equal($scope.getProbabilityRemaining(), "0" )
+
 
         $scope.addEmail = () ->
             if not $scope.newEmail
@@ -63,6 +69,10 @@ define ["app", "../filters"], (app, filters) ->
             if $scope.payload.emails[idx] == $scope.user
                 return
             $scope.payload.emails.splice(idx, 1);
+
+        $scope.getSum = () ->
+            probs = _.pluck($scope.payload.values, "probability")
+            return rationals.pp(rationals.sum(probs...))
 
 
 

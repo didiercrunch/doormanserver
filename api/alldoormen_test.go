@@ -16,8 +16,8 @@ func init() {
 
 func TestGetAllDoormen(t *testing.T) {
 	conn = inmemoryconnector.NewInMemoryDBConnector()
-	conn.Save(doormen.QuickNewDoormanDefinition("foo", 0.25, 0.75))
-	conn.Save(doormen.QuickNewDoormanDefinition("bar", 0.5, 0.5))
+	conn.Save(doormen.QuickNewDoormanDefinition("foo", "0.25", "0.75"))
+	conn.Save(doormen.QuickNewDoormanDefinition("bar", "0.5", "0.5"))
 
 	req, err := http.NewRequest("GET", "http://bigtits.com/api/doormen", nil)
 	if err != nil {

@@ -17,7 +17,7 @@ gulp.task('bower', function() {
 
 gulp.task('sass', ['bower'], function () {
     return gulp.src('./scss/*.scss')
-        .pipe(sass({includePaths: ['bower_components/foundation/scss']}))
+        .pipe(sass({includePaths: ['bower_components/foundation/scss', 'bower_components/bourbon/app/assets/stylesheets']}))
         .pipe(gulp.dest('./css'));
 });
 

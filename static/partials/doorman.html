@@ -12,19 +12,13 @@
 </div>
 
 <div class="row" ng-repeat="value in doorman.values">
-    <div class="columns large-8 small-10">
+    <div class="columns large-7 small-10">
         <label >name<input type="text" placeholder="value name" ng-value="value.name" disabled></label>
     </div>
     <div class="columns large-4 small-2">
         <label >
             probability
-            <input type="number"
-                   placeholder="value probability"
-                   ng-model="value.probability"
-                   ng-disabled="!isAdmin"
-                   min="0"
-                   max="1"
-                   step="0.01"></label>
+            <rat-input ng-model="value.probability" ng-disabled="!isAdmin"></rat-input>
     </div>
 </div>
 
@@ -55,11 +49,11 @@
             <label>
                 new admin
                 <div class="row collapse">
-                    <div class="columns large-10">
+                    <div class="columns large-10 small-10">
 
                         <input type="text" ng-model="newEmail"/>
                     </div>
-                    <div class="columns large-2">
+                    <div class="columns large-2 small-2">
 
                         <a class="button postfix" ng-click="addNewAuthorEmail()"  ng-class=" canAddNewEmail() ? '' : 'disabled' " >+</a>
                     </div>

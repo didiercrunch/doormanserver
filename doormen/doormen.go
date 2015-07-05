@@ -4,18 +4,22 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"gopkg.in/mgo.v2/bson"
+	"math/big"
 	"strconv"
 	"time"
 
 	"github.com/didiercrunch/doorman/shared"
-	"gopkg.in/mgo.v2/bson"
 )
 
-const epsilon float64 = 0.0001
-
 type DoormanValue struct {
-	Name        string  `json:"name" bson:"name"`
-	Probability float64 `json:"probability" bson:"probability"`
+	Name        string   `json:"name"`
+	Probability *big.Rat `json:"probability"`
+}
+
+type doormanValue struct {
+	Name        string
+	Probability string
 }
 
 type DoormanId struct {
@@ -43,10 +47,15 @@ func NewDoormanDefinition(name string, ownerEmails ...string) *DoormanDefinition
 
 // a way to quickly create doormen in tests.  do not use in real code.  will
 // panic if a doorman is wrongly specify
-func QuickNewDoormanDefinition(name string, probs ...float64) *DoormanDefinition {
+func QuickNewDoormanDefinition(name string, probs ...string) *DoormanDefinition {
 	ret := NewDoormanDefinition(name, "natasha@bigtits.com")
 	for i, prob := range probs {
-		ret.Values = append(ret.Values, &DoormanValue{"T" + strconv.Itoa(i), prob})
+		r := new(big.Rat)
+		_, err := fmt.Sscan(prob, r)
+		if err != nil {
+			panic(err)
+		}
+		ret.Values = append(ret.Values, &DoormanValue{"T" + strconv.Itoa(i), r})
 	}
 	if err := ret.Validate("natasha@bigtits.com"); err != nil {
 		panic(err)
@@ -79,18 +88,19 @@ func (dmd *DoormanDefinition) AsWriteAccess(email string) bool {
 }
 
 func (dmd *DoormanDefinition) ValidateDoormanValueProbabilities() error {
-	var sum float64 = 0
+	sum, zero, one := big.NewRat(0, 1), big.NewRat(0, 1), big.NewRat(1, 1)
 	for _, w := range dmd.Values {
 
-		if p := w.Probability; p < 0-epsilon || p > 1+epsilon {
+		if p := w.Probability; p.Cmp(zero) < 0 || p.Cmp(one) > 0 {
 			return errors.New(fmt.Sprintf("doorman value %v is out of range", p))
 		} else {
-			sum += p
+			sum = new(big.Rat).Add(sum, p)
 		}
 	}
-	if sum < 1-epsilon || sum > 1+epsilon {
-		return errors.New("the sum of the probability must be 1.0")
+	if sum.Cmp(one) != 0 {
+		return errors.New("the sum of the probability must be 1")
 	}
+
 	return nil
 }
 
@@ -125,7 +135,7 @@ func (dmd *DoormanDefinition) CanBeUpdatedBy(dmd2 *DoormanDefinition) error {
 func (dmd *DoormanDefinition) AsDoormanUpdatePayload() ([]byte, error) {
 	wu := &shared.DoormanUpdater{Id: dmd.Id.Hex()}
 	wu.Timestamp = time.Now().Unix()
-	wu.Probabilities = make([]float64, len(dmd.Values))
+	wu.Probabilities = make([]*big.Rat, len(dmd.Values))
 	for i, value := range dmd.Values {
 		wu.Probabilities[i] = value.Probability
 	}

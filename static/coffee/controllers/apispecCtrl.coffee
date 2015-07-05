@@ -25,8 +25,8 @@ define ["app", "angularAMD"], (app, angularAMD) ->
 
     angularAMD.directive "wabApi", () ->
         directive =
-                restrict: 'E',
-                scope:
-                  endpoint: '@'
-                template: '<a>/api{{ endpoint }}</a>'
+            restrict: 'E',
+            scope:
+                endpoint: '@'
+            template: '<a>/api{{ endpoint }}</a>'
         return directive

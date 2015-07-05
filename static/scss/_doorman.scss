@@ -1,4 +1,6 @@
 @import "settings";
+@import "bourbon";
+
 // @import url(http://fonts.googleapis.com/css?family=Orbitron:400,900,500,700);
 @font-face {
   font-family: 'Orbitron';
@@ -24,5 +26,38 @@ h1, h2{
 .wab-apispect{
     h2{
         text-align: center;
+    }
+}
+
+.rat-input{
+    .fraction-box{
+        font-family: monospace;
+        font-size: 1.3em;
+        border: 2px;
+        padding: 0.3em;
+        box-shadow: 2px 2px 1px #888;
+        @include border-top-radius(5px);
+        @include border-bottom-radius(5px);
+
+        i{
+            font-size: 1em;
+            margin-left: 0.2em;
+        }
+    }
+
+    .fraction-box:hover{
+        border: 2px;
+        padding: 0.3em;
+        box-shadow: 2px 2px 1px red;
+    }
+
+    .edit{
+        input{
+              width: 4em;
+              height: 2em;
+              display: inline;
+              padding: 0px;
+              padding-left: 0.5em;
+        }
     }
 }

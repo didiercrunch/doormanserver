@@ -44,11 +44,19 @@ func Create(root string) http.Handler {
 		UpdateDoorman,
 	}
 
+	getDoormanStatus := &simpleapi.Endpoint{
+		"/doormen/{id}/status",
+		`Returns the status of the doorman as a doorman client expect it.`,
+		"GET",
+		GetDoormanStatus,
+	}
+
 	api := simpleapi.New(
 		root,
 		serverSpecification,
 		createDoorman,
 		allDoorman,
+		getDoormanStatus,
 		doorman,
 		updateDoorman,
 	)

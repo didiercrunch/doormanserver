@@ -18,7 +18,7 @@ func TestCreateDoorman(t *testing.T) {
 	conn = inmemoryconnector.NewInMemoryDBConnector()
 	payload := `
 	{"name":"name",
-	"values":[{"name":"red","probability":0.2},{"name":"blue","probability":0.8}],
+	"values":[{"name":"red","probability":"1/5"},{"name":"blue","probability": "4/5"}],
 	"emails": ["alice"]
 	}`
 	req, err := http.NewRequest(
@@ -34,7 +34,7 @@ func TestCreateDoorman(t *testing.T) {
 	w := httptest.NewRecorder()
 	CreateDoorman(w, req)
 	if w.Code != 201 {
-		t.Error("bad status code", w.Code)
+		t.Error("bad status code", w.Code, "\n", w.Body)
 	} else if location := w.Header().Get("location"); location == "" {
 		t.Error("missing location header", location)
 	} else if dor, _ := conn.GetDoorman(GetIdFromLocation(location)); dor == nil {

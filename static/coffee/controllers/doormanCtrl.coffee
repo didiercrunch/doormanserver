@@ -1,6 +1,8 @@
-define ["app", "lodash"], (app, _) ->
+define ["app", "lodash", "directives/ratinput"], (app, _, ratinput) ->
+
     app.controller "DoormanCtrl", ["$scope", "$http","$routeParams","$location", ($scope, $http, $routeParams, $location) ->
         $scope.doorman = {values: []}
+        $scope.somevalue = "2/6"
         $scope.apiurl = "/api/doormen/#{$routeParams.id}"
         $scope.user = localStorage.getItem("email")
 
@@ -20,10 +22,18 @@ define ["app", "lodash"], (app, _) ->
         $scope.initEmails = () ->
             [$scope.leftEmailColumns, $scope.rightEmailColumns] = _.chunk($scope.doorman.emails, 2)
 
+        $scope.rationalToFloat = (rat) ->
+            if _.contains(rat, "/")
+                num = Number(rat.substr(0, rat.indexOf("/")))
+                denum = Number(rat.substr(rat.indexOf("/") + 1))
+                return num / denum
+            Number(rat)
+
+
         $scope.validate = ()->
             ret = 0
             for val in $scope.doorman.values
-                ret += val.probability
+                ret += $scope.rationalToFloat(val.probability)
             return Math.abs(ret - 1.0) < 0.000001
 
         $scope.addNewAuthorEmail = () ->

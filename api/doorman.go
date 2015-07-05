@@ -21,3 +21,24 @@ func GetDoorman(w http.ResponseWriter, r *http.Request) {
 		encoder.Encode(doorman)
 	}
 }
+
+func GetDoormanStatus(w http.ResponseWriter, r *http.Request) {
+	id := getDoormanIdFromRequest(w, r)
+	if id == "" {
+		Write404Error(w)
+		return
+	}
+	doorman, err := conn.GetDoorman(id)
+	if err != nil {
+		Write500Error(w, err)
+	} else if doorman == nil {
+		Write404Error(w)
+	}
+
+	if payload, err := doorman.AsDoormanUpdatePayload(); err != nil {
+		Write500Error(w, err)
+	} else {
+		w.Write(payload)
+	}
+
+}

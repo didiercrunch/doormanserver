@@ -1,9 +1,11 @@
 
 define [
     "angularAMD"
+    "lodash"
     "angular-route"
     "foundation"
-], (angularAMD) ->
+
+], (angularAMD, _) ->
     app = angular.module("webapp", ["ngRoute", "mm.foundation"])
     app.config ($routeProvider) ->
         $routeProvider.when("/", angularAMD.route(
@@ -39,6 +41,24 @@ define [
         document.getElementsByTagName("body")[0].style.visibility = ""
         return
 
+    app.controller "topbarCtrl", ["$scope", "$rootScope", "$location", ($scope, $rootScope, $location) ->
+
+        $scope.init = () ->
+            $scope.email = localStorage.getItem("email")
+            $scope.loggedIn = !!$scope.email
+            if !$scope.loggedIn
+                $location.path('/').replace()
+
+        $scope.logout = () ->
+            localStorage.setItem("email", "")
+            $scope.email = ""
+            $scope.loggedIn = false
+            $scope.$emit("logout")
+
+        $scope.init()
+        $rootScope.$on('login', $scope.init)
+        return
+    ]
 
 
     angularAMD.bootstrap(app)
