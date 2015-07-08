@@ -9,7 +9,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/didiercrunch/doorman/shared"
+	client "github.com/didiercrunch/doorman/shared"
+	"github.com/didiercrunch/doormanserver/shared"
 )
 
 type DoormanValue struct {
@@ -128,7 +129,7 @@ func (dmd *DoormanDefinition) CanBeUpdatedBy(dmd2 *DoormanDefinition) error {
 }
 
 func (dmd *DoormanDefinition) AsDoormanUpdatePayload() ([]byte, error) {
-	wu := &shared.DoormanUpdater{Id: dmd.Id.Hex()}
+	wu := &client.DoormanUpdater{Id: shared.ObjectIdToPublicId(dmd.Id)}
 	wu.Timestamp = time.Now().Unix()
 	wu.Probabilities = make([]*big.Rat, len(dmd.Values))
 	for i, value := range dmd.Values {

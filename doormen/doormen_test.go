@@ -5,7 +5,8 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/didiercrunch/doorman/shared"
+	client "github.com/didiercrunch/doorman/shared"
+	"github.com/didiercrunch/doormanserver/shared"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -101,11 +102,11 @@ func TestAsDoormanUpdatePayload(t *testing.T) {
 		t.Error(err)
 		return
 	}
-	wu := &shared.DoormanUpdater{}
+	wu := &client.DoormanUpdater{}
 	if err := json.Unmarshal(data, wu); err != nil {
 		t.Error(err)
 	}
-	if wd.Id.Hex() != wu.Id {
+	if shared.ObjectIdToPublicId(wd.Id) != wu.Id {
 		t.Error("bad id", wu.Id)
 	}
 	if len(wu.Probabilities) != 2 {
