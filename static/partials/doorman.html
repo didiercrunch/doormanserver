@@ -12,8 +12,16 @@
 </div>
 
 <div class="row" ng-repeat="value in doorman.values">
-    <div class="columns large-7 small-10">
-        <label >name<input type="text" placeholder="value name" ng-value="value.name" disabled></label>
+    <div class="columns large-8 small-10">
+        <div class="row">
+            <div class="large-2 columns">
+                <a class="button prefix disabled" ng-bind="$index"> </a>
+            </div>
+            <div class="large-10 columns">
+                <input type="text" placeholder="value name" ng-value="value.name" disabled>
+            </div>
+
+        </div>
     </div>
     <div class="columns large-4 small-2">
         <label >
@@ -76,7 +84,9 @@
     <div class="large-12 small-12 columns">
         <ul class="button-group">
             <li><a ng-click="updateDoorman()" class="small button" ng-class="{disabled: !validate()}">Update</a></li>
-            <li><a ng-click="deleteDoorman()" class="small button">Delete</a></li>
         </ul>
+        <span ng-show="doormanChanged">
+            doorman changed
+        </span>
     </div>
 </div>

@@ -1,10 +1,11 @@
 define ["app", "lodash", "directives/ratinput"], (app, _, ratinput) ->
 
-    app.controller "DoormanCtrl", ["$scope", "$http","$routeParams","$location", ($scope, $http, $routeParams, $location) ->
+    app.controller "DoormanCtrl", ["$scope", "$http","$routeParams","$location", "$timeout", ($scope, $http, $routeParams, $location, $timeout) ->
         $scope.doorman = {values: []}
         $scope.somevalue = "2/6"
         $scope.apiurl = "/api/doormen/#{$routeParams.id}"
         $scope.user = localStorage.getItem("email")
+        $scope.doormanChanged = false
 
         $http.get($scope.apiurl).then((res) ->
             $scope.doorman = res.data
@@ -61,6 +62,11 @@ define ["app", "lodash", "directives/ratinput"], (app, _, ratinput) ->
             params = {params: {user: $scope.user}}
             $http.put($scope.apiurl, $scope.doorman, params).then((ret)->
                 console.log "update"
+            ).then((res) ->
+                $scope.doormanChanged = true
+                $timeout(() ->
+                    $scope.doormanChanged = false
+                , 3000)
             ).catch((res) ->
                 $scope.error =
                     message: res.data
