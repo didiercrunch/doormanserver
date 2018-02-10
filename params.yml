@@ -17,7 +17,7 @@ host: 0.0.0.0  #localhost
 message_queue: nanomsg # nanomsg  # nsq
 
 #  determine which database to use
-database: mongo  # mongo
+database: in-memory  # mongo or in-memory
 
 ################################################################################
 
